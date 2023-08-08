@@ -1,38 +1,19 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expectTypeOf, assertType, it, vi } from 'vitest'
+import { getLabel } from "./test"
 
-const sut = {
-    purchase: () => {
-        const businessHours = [9, 17]
-        const currentHour = new Date().getHours()
-        const [open, close] = businessHours
-
-        if (currentHour > open && currentHour < close)
-            return { message: 'Success' }
-
-        return { message: 'Error' }
-    }
-}
-
-describe(`購入フローのテスト`, () => {
-    beforeEach(() => {
-        // Mockを使う
-        vi.useFakeTimers()
-    })
-
+describe(`Testing Types`, () => {
     afterEach(() => {
-        // Mockではなくリアルタイムを使う
-        vi.useRealTimers()
+        vi.restoreAllMocks()
     })
+    it(`関数であるかどうかと、引数の型を検証する`, () => {
+        //! 関数であるかどうか
+        expectTypeOf(getLabel).toBeFunction()
 
-    it(`営業時間内の場合、purchase()はErrorを返す`, () => {
-        const date = new Date(2000, 1, 1, 13)
-        vi.setSystemTime(date)
-        expect(sut.purchase()).toEqual({ message: 'Success' })
-    })
-
-    it(`営業時間外の場合、purchase()はErrorを返す`, () => {
-        const date = new Date(2000, 1, 1, 19)
-        vi.setSystemTime(date)
-        expect(sut.purchase()).toEqual({ message: 'Error' })
+        //! 引数の型を検証する
+        expectTypeOf(getLabel).parameter(0).toMatchTypeOf<string>()
+        expectTypeOf(getLabel).parameter(1).toMatchTypeOf<number>()
+		console.log("hoge")
+        //! まとめて検証
+        assertType(getLabel('名前', 1))
     })
 })
