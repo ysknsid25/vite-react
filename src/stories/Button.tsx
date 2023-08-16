@@ -7,13 +7,9 @@ interface ButtonProps {
    */
   primary?: boolean;
   /**
-   * What background color to use
-   */
-  backgroundColor?: string;
-  /**
    * How large should the button be?
    */
-  size?: 'small' | 'medium' | 'large';
+  size?: 'sm' | 'md' | 'lg';
   /**
    * Button contents
    */
@@ -29,17 +25,22 @@ interface ButtonProps {
  */
 export const Button = ({
   primary = false,
-  size = 'medium',
-  backgroundColor,
+  size = 'md',
   label,
   ...props
 }: ButtonProps) => {
-  const mode = primary ? 'storybook-button--primary' : 'storybook-button--secondary';
+  const mode = primary ? 'bg-blue-500' : 'bg-gray-500';
   return (
     <button
       type="button"
-      className={['storybook-button', `storybook-button--${size}`, mode].join(' ')}
-      style={{ backgroundColor }}
+      className={[
+        'text-white',
+        'rounded',
+        size === "sm" && 'px-2 py-1',
+        size === "md" && 'px-4 py-2',
+        size === "lg" && 'px-8 py-4',
+        mode
+      ].join(' ')}
       {...props}
     >
       {label}
